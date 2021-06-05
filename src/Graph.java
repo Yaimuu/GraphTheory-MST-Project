@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Graph {
     private String name;
@@ -18,6 +21,7 @@ public class Graph {
         this.edges = newEdges;
         this.vertices = newVertices;
         this.generateAdjacencyMatrix();
+        this.setVerticesParents();
     }
 
     public Graph(String name, boolean directed, List<Vertex> vertices, List<Edge> edges)
@@ -25,11 +29,6 @@ public class Graph {
         this(edges, vertices);
         this.name = name;
         this.directed = directed;
-    }
-
-    public Graph(Graph newGraph)
-    {
-
     }
 
     public Graph(String file)
@@ -40,6 +39,7 @@ public class Graph {
             this.vertices = newGraph.vertices;
             this.name = newGraph.name;
             this.directed = newGraph.directed;
+            this.setVerticesParents();
         }
         catch (Exception e)
         {
@@ -71,16 +71,20 @@ public class Graph {
         }
     }
 
-    // Complexity : O(m*log(m))
+    /**
+     * Complexity : O(m*log(m))
+     * @return
+     */
     public Graph Kruskal1()
     {
+        System.out.println("Execution of Kruskal 1...");
         long startTime = System.nanoTime();
 
         Graph kruskal = new Graph(new LinkedList<Edge>(), this.vertices);
         kruskal.setName("Kruskal 1");
         int i = 0;
 
-        List<Edge> edgesSorted = this.edges;
+        List<Edge> edgesSorted = new LinkedList<>(this.edges);
 
         Collections.sort(edgesSorted, new Comparator<Edge>() {
             @Override
@@ -120,10 +124,69 @@ public class Graph {
         kruskal.setLastDuration(endTime-startTime);
         this.setLastDuration(endTime-startTime);
 
+        System.out.println("End of execution of Kruskal 1 !");
+
         return kruskal;
     }
 
-    // Complexity : O(m*n)
+    public Graph Kruskal3()
+    {
+        System.out.println("Execution of Kruskal 3...");
+        long startTime = System.nanoTime();
+
+        List<Edge> edgesSorted = new LinkedList<>(this.edges);
+
+        Collections.sort(edgesSorted, new Comparator<Edge>() {
+            @Override
+            public int compare(Edge edge1, Edge edge2) {
+                return edge2.getValue() - edge1.getValue();
+            }
+        });
+
+        Graph kruskal = new Graph(edgesSorted, this.vertices);
+        kruskal.setName("Kruskal 3");
+        int i = 0;
+
+        subset subsets[] = new subset[this.vertices.size()];
+        for(i = 0; i < this.vertices.size(); ++i)
+            subsets[i]=new subset();
+
+        for (int v = 0; v < this.vertices.size(); ++v)
+        {
+            subsets[v].parent = v;
+            subsets[v].rank = 0;
+        }
+
+        i = 0;
+
+        while (kruskal.edges.size() >= this.vertices.size())
+        {
+            Edge currentEdge = edgesSorted.get(i++);
+
+            int x = find(subsets, currentEdge.getStart().getId());
+            int y = find(subsets, currentEdge.getEnd().getId());
+
+            if (x != y)
+            {
+                kruskal.edges.remove(currentEdge);
+                union(subsets, x, y);
+            }
+        }
+
+        long endTime = System.nanoTime();
+
+        kruskal.setLastDuration(endTime-startTime);
+        this.setLastDuration(endTime-startTime);
+
+        System.out.println("End of execution of Kruskal 3 !");
+
+        return kruskal;
+    }
+
+    /**
+     * Complexity : O(m*n)
+     * @return
+     */
     public Graph Kruskal1V1()
     {
         long startTime = System.nanoTime();
@@ -133,7 +196,7 @@ public class Graph {
         int i = 0;
 
         // Edge list ordered in increasing order
-        List<Edge> edgesSorted = this.edges;
+        List<Edge> edgesSorted = new LinkedList<>(this.edges);
 
         Collections.sort(edgesSorted, new Comparator<Edge>() {
             @Override
@@ -163,12 +226,17 @@ public class Graph {
         return kruskal;
     }
 
-    // Complexity : O(m*n)
+    /**
+     * Complexity : O(m*n)
+     * @return
+     */
     public Graph Kruskal2()
     {
+        System.out.println("Execution of Kruskal 2...");
+
         long startTime = System.nanoTime();
         // Edge list ordered in decreasing order
-        List<Edge> edgesSorted = this.edges;
+        List<Edge> edgesSorted = new LinkedList<>(this.edges);
 
         Collections.sort(edgesSorted, new Comparator<Edge>() {
             @Override
@@ -177,18 +245,37 @@ public class Graph {
             }
         });
 
-        Graph kruskal = new Graph(edgesSorted, this.vertices);
+        Graph kruskal = new Graph(edgesSorted, new LinkedList<>(this.vertices));
         kruskal.setName("Kruskal 2");
+//        kruskal.getVerticesParents();
+        System.out.println(kruskal);
         int i = 0;
 
-        while (this.edges.size() >= this.vertices.size())
+        while (kruskal.edges.size() >= this.vertices.size())
         {
-            Edge currentEdge = kruskal.edges.get(i);
+            if(i == this.vertices.size())
+            {
+                System.out.println("Error of : " + (kruskal.edges.size() - this.vertices.size()) + " edges !");
+                System.out.println("kSize : " + kruskal.edges.size());
+//                break;
+            }
+
+            Edge currentEdge = edgesSorted.get(i);
+            Vertex start = currentEdge.getStart();
+            Vertex end = currentEdge.getEnd();
+
+//            System.out.println(i + " -                               Arc : " + currentEdge);
 
             kruskal.edges.remove(currentEdge);
+            start.getParents().remove(end);
+            end.getParents().remove(start);
+
             if(!kruskal.isConnexe())
             {
+//                System.out.println(currentEdge);
                 kruskal.edges.add(i, currentEdge);
+                start.getParents().add(end);
+                end.getParents().add(start);
             }
             else
             {
@@ -204,63 +291,21 @@ public class Graph {
         kruskal.setLastDuration(endTime-startTime);
         this.setLastDuration(endTime-startTime);
 
+        System.out.println("End of execution of Kruskal 2 !");
+
         return kruskal;
     }
 
-    public Graph Prim3()
+    /**
+     * Complexity : O(n²)
+     * @return
+     */
+    public Graph Prim()
     {
-        System.out.println("Prim");
-
-        long startTime = System.nanoTime();
-
-        int parent[] = new int[this.vertices.size()];
-
-        int key[] = new int[this.vertices.size()];
-
-        List<Vertex> visitedVertices = new LinkedList<>();
-
-        for (int i = 0; i < this.vertices.size(); i++) {
-            key[i] = Integer.MAX_VALUE;
-        }
-
-        key[0] = 0;
-        parent[0] = -1;
-
-        while(visitedVertices.size() != this.vertices.size()) {
-
-            int min = Integer.MAX_VALUE;
-            int u = -1;
-
-            for (int v = 0; v < this.vertices.size(); v++)
-                if (!visitedVertices.contains(this.vertices.get(v)) && key[v] < min) {
-                    min = key[v];
-                    u = v;
-                }
-
-            visitedVertices.add(this.vertices.get(u));
-
-            for (int v = 0; v < this.vertices.size(); v++)
-                if (adjacentMatrix.get(u).get(v) != 0 && !visitedVertices.contains(this.vertices.get(v)) && adjacentMatrix.get(u).get(v) < key[v]) {
-                    parent[v] = u;
-                    key[v] = adjacentMatrix.get(u).get(v);
-                }
-        }
-
-        long endTime = System.nanoTime();
-
-        Graph prim = new Graph(new LinkedList<Edge>(), this.vertices);
-
-        prim.setLastDuration(endTime-startTime);
-        this.setLastDuration(endTime-startTime);
-
-        return prim;
-    }
-
-    public Graph Prim2()
-    {
+        System.out.println("Execution of Prim...");
         Graph prim = new Graph(new LinkedList<Edge>(), this.vertices);
         prim.setName("Prim");
-        System.out.println("Prim");
+//        System.out.println("Prim");
 
         long startTime = System.nanoTime();
 
@@ -268,60 +313,35 @@ public class Graph {
         int sommetIndice = rand.nextInt(vertices.size());
 
         Vertex randVertex = this.vertices.get(sommetIndice);
-        List<Vertex> savedVertices = new LinkedList<>(Collections.nCopies(vertices.size(), randVertex));
-//        savedVertices.add(randVertex);
-        List<Integer> savedWeigthes = new ArrayList<>(Collections.nCopies(vertices.size(), Integer.MAX_VALUE));
+        List<Vertex> visitedVertices = new LinkedList<>();
+        visitedVertices.add(randVertex);
 
-        List<Edge> edgesSorted = this.edges;
-
-        Collections.sort(edgesSorted, new Comparator<Edge>() {
-            @Override
-            public int compare(Edge edge1, Edge edge2) {
-                return edge1.getValue() - edge2.getValue();
-            }
-        });
-
-        savedWeigthes.set(0,0);
-
-        for(int i = 0; i < this.vertices.size() - 1; i++)
+        while(this.vertices.size() != visitedVertices.size())
         {
-            int finalI = i;
-            int min = Integer.MAX_VALUE;
-
-            for (int n = 0; n < adjacentMatrix.get(i).size() - 1; n++)
+            int minimumWeight = Integer.MAX_VALUE;
+            Edge minimumEdge = new Edge();
+            Vertex vertexZ = new Vertex(-1);
+            for(Edge e : this.edges)
             {
-                int node = adjacentMatrix.get(i).get(n), nextNode = adjacentMatrix.get(i).get(n+1);
-
-                if(node < nextNode && node != 0 && !savedVertices.contains(vertices.get(n)))
+                if(e.getValue() < minimumWeight)
                 {
-                    min = node;
-                }
-                else if(node < nextNode && nextNode != 0 && !savedVertices.contains(vertices.get(n+1)))
-                    min = nextNode;
-            }
-
-            int minId = adjacentMatrix.get(i).indexOf(min);
-
-            Vertex minVertex = this.vertices.get(minId);
-            System.out.println(savedWeigthes);
-            System.out.println("min : " + min + " - minId : " + minId);
-
-            for(int j = 0; j < this.vertices.size(); j++)
-            {
-                if(adjacentMatrix.get(minId).get(j) != 0 &&
-                        adjacentMatrix.get(minId).get(j) < savedWeigthes.get(j) &&
-                        savedVertices.contains(vertices.get(j)))
-                {
-                    System.out.println("i : " + i + " - j : " + j);
-
-                    prim.edges.add(this.findEdge(vertices.get(minId), vertices.get(j)));
-                    savedWeigthes.set(j, adjacentMatrix.get(minId).get(j));
-                    savedVertices.set(minId, this.vertices.get(j));
-
-                    System.out.println(savedVertices);
+                    if(visitedVertices.contains(e.getEnd()) && !visitedVertices.contains(e.getStart()))
+                    {
+                        vertexZ = e.getStart();
+                        minimumWeight = e.getValue();
+                        minimumEdge = e;
+                    }
+                    else if(visitedVertices.contains(e.getStart()) && !visitedVertices.contains(e.getEnd()))
+                    {
+                        vertexZ = e.getEnd();
+                        minimumWeight = e.getValue();
+                        minimumEdge = e;
+                    }
                 }
             }
 
+            prim.edges.add(minimumEdge);
+            visitedVertices.add(vertexZ);
         }
 
         long endTime = System.nanoTime();
@@ -329,59 +349,98 @@ public class Graph {
         prim.setLastDuration(endTime-startTime);
         this.setLastDuration(endTime-startTime);
 
+        System.out.println("End of execution of Prim !");
+
         return prim;
-    }
-
-public Graph Prim()
-{
-    Graph prim = new Graph(new LinkedList<Edge>(), this.vertices);
-    prim.setName("Prim");
-    System.out.println("Prim");
-
-    long startTime = System.nanoTime();
-
-    Random rand = new Random();
-    int sommetIndice = rand.nextInt(vertices.size());
-
-    Vertex randVertex = this.vertices.get(sommetIndice);
-    List<Vertex> visitedVertices = new LinkedList<>();
-    visitedVertices.add(randVertex);
-
-    while(this.vertices.size() != visitedVertices.size())
-    {
-        int minimumWeight = Integer.MAX_VALUE;
-        Edge minimumEdge = new Edge();
-        Vertex vertexZ = new Vertex(-1);
-        for(Edge e : this.edges)
-        {
-            if(e.getValue() < minimumWeight)
-            {
-                if(visitedVertices.contains(e.getEnd()) && !visitedVertices.contains(e.getStart()))
-                {
-                    vertexZ = e.getStart();
-                    minimumWeight = e.getValue();
-                    minimumEdge = e;
-                }
-                else if(visitedVertices.contains(e.getStart()) && !visitedVertices.contains(e.getEnd()))
-                {
-                    vertexZ = e.getEnd();
-                    minimumWeight = e.getValue();
-                    minimumEdge = e;
-                }
-            }
         }
 
-        prim.edges.add(minimumEdge);
-        visitedVertices.add(vertexZ);
-    }
+     int vertexDegree(int vertexID)
+     {
+         int degree = 0;
 
-    long endTime = System.nanoTime();
+         for(int i = 0; i < this.vertices.size(); i++)
+         {
+             if(this.adjacentMatrix.get(vertexID).get(i) != 0)
+                 degree++;
+         }
 
-    prim.setLastDuration(endTime-startTime);
-    this.setLastDuration(endTime-startTime);
+         return degree;
+     }
 
-    return prim;
-    }
+     public Graph dMST(int degre)
+     {
+        Graph dMST = new Graph(new LinkedList<Edge>(), this.vertices);
+
+         System.out.println("Execution of d-MST...");
+         dMST.setName("D-MST");
+
+         long startTime = System.nanoTime();
+
+         Random rand = new Random();
+         int sommetIndice = rand.nextInt(vertices.size());
+
+         Vertex randVertex = this.vertices.get(sommetIndice);
+         List<Vertex> visitedVertices = new LinkedList<>();
+         visitedVertices.add(randVertex);
+
+         while(this.vertices.size() != visitedVertices.size())
+         {
+             int minimumWeight = Integer.MAX_VALUE;
+             Edge minimumEdge = new Edge();
+             Vertex vertexZ = new Vertex(-1);
+             Vertex vertexY = new Vertex(-1);
+             for(Edge e : this.edges)
+             {
+                 if(e.getValue() < minimumWeight)
+                 {
+                     if(visitedVertices.contains(e.getEnd()) && !visitedVertices.contains(e.getStart()))
+                     {
+                         vertexZ = e.getStart();
+                         vertexY = e.getEnd();
+                         minimumWeight = e.getValue();
+                         minimumEdge = e;
+                     }
+                     else if(visitedVertices.contains(e.getStart()) && !visitedVertices.contains(e.getEnd()))
+                     {
+                         vertexZ = e.getEnd();
+                         vertexY = e.getStart();
+                         minimumWeight = e.getValue();
+                         minimumEdge = e;
+                     }
+                 }
+             }
+
+             if(vertexDegree(vertexY.getId()) < degre && vertexDegree(vertexZ.getId()) < degre)
+             {
+                 dMST.edges.add(minimumEdge);
+                 visitedVertices.add(vertexZ);
+                 dMST.generateAdjacencyMatrix();
+             }
+             else
+             {
+                 this.vertices.remove(minimumEdge);
+                 visitedVertices.add(vertexZ);
+             }
+
+             System.out.println("Degree de " + vertexZ.getName() + " : " + dMST.vertexDegree(vertexZ.getId()) );
+             System.out.println("Degree de " + vertexY.getName() + " : " + dMST.vertexDegree(vertexY.getId()) );
+             System.out.println("----");
+         }
+
+         long endTime = System.nanoTime();
+
+         dMST.setLastDuration(endTime-startTime);
+         this.setLastDuration(endTime-startTime);
+
+         System.out.println("End of execution of d-MST !");
+
+         dMST.setVerticesParents();
+        if(dMST.isConnexe())
+            return dMST;
+        else
+            System.out.print("Pas d'arbre recouvrant de degrée " + degre + " pour ce graphe.");
+            return null;
+     }
 
     public List<List<Integer>> generateAdjacencyMatrix()
     {
@@ -474,30 +533,44 @@ public Graph Prim()
 
     public boolean isConnexe()
     {
-        List<Vertex> savedVertices = new LinkedList<>();
+        List<Integer> clusterIds = IntStream.rangeClosed(0, this.vertices.size()).boxed().collect(Collectors.toList());
 
-        for (Edge edge:
-             this.edges)
+        HashMap<Vertex, Integer> clusteredVisitedVertices = new HashMap<>(ToolBox.zipToMap(new LinkedList<>(this.vertices), clusterIds));
+
+        Vertex lastVertex = this.vertices.get(0);
+
+        for (Vertex vertex:
+             this.vertices)
         {
-            Vertex start = edge.getStart();
-            Vertex end = edge.getEnd();
-
-            if(!savedVertices.contains(start))
+            if(vertex.getDegree() == 0)
             {
-                savedVertices.add(start);
-            }
-            if(!savedVertices.contains(end))
-            {
-                savedVertices.add(end);
+//                System.out.println("0 Degree !");
+                break;
             }
 
-            if(savedVertices.size() == this.vertices.size())
+            for (Vertex parent : vertex.getParents())
             {
-                return true;
+                if(vertex.getParents().contains(parent))
+                {
+                    if(clusteredVisitedVertices.get(parent) < clusteredVisitedVertices.get(vertex))
+                        clusteredVisitedVertices.replace(vertex, clusteredVisitedVertices.get(parent));
+                    else if(clusteredVisitedVertices.get(parent) > clusteredVisitedVertices.get(vertex))
+                        clusteredVisitedVertices.replace(parent, clusteredVisitedVertices.get(vertex));
+                }
             }
         }
 
-        return false;
+//        System.out.println(clusteredVisitedVertices);
+//        System.out.println("------------------");
+        int firstValue = clusteredVisitedVertices.get(this.vertices.get(0));
+        for (Map.Entry<Vertex, Integer> vertexMapped:
+                clusteredVisitedVertices.entrySet())
+        {
+            if(vertexMapped.getValue() != firstValue)
+                return false;
+        }
+
+        return true;
     }
 
     public String toString()
@@ -573,8 +646,14 @@ public Graph Prim()
                         else if(lastPart.equals(partSeparator.get(1)))
                         {
                             spllitedLine = line.split(" ");
-                            Edge edge = new Edge(vertices.get(Integer.parseInt(spllitedLine[0])), vertices.get(Integer.parseInt(spllitedLine[1])), Integer.parseInt(spllitedLine[2]));
-                            edges.add(edge);
+
+                            Vertex start = vertices.get(Integer.parseInt(spllitedLine[0]));
+                            Vertex end = vertices.get(Integer.parseInt(spllitedLine[1]));
+
+                            Edge edge = new Edge(start, end, Integer.parseInt(spllitedLine[2]));
+
+                            if( !edges.contains(new Edge(end, start, Integer.parseInt(spllitedLine[2]))) )
+                                edges.add(edge);
                         }
                     }
                 }
@@ -590,6 +669,38 @@ public Graph Prim()
         Graph GraphFile = new Graph(name, directed, vertices, edges);
 
         return GraphFile;
+    }
+
+    public void setVerticesParents()
+    {
+        for (Vertex v:
+             this.vertices) {
+            v.getParents().clear();
+        }
+
+        for (Edge edge : this.edges)
+        {
+            Vertex start = edge.getStart();
+            Vertex end = edge.getEnd();
+
+            if(!start.getParents().contains(end))
+            {
+                start.getParents().add(end);
+            }
+
+            if(!end.getParents().contains(start))
+            {
+                end.getParents().add(start);
+            }
+        }
+    }
+
+    public void getVerticesParents()
+    {
+        for (Vertex v:
+                this.getVertices()) {
+            System.out.println("Vertex : " + v + " - Parents : " + v.getParents());
+        }
     }
 
     public String getName() {

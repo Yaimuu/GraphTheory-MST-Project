@@ -1,0 +1,48 @@
+Nom: peterson
+Oriente: non
+NbSommets: 10
+NbValSommet: 0
+NbArcs: 30
+NbValArc: 1
+--- Liste des sommets
+0 A
+1 B
+2 C
+3 D
+4 E
+5 F
+6 G
+7 H
+8 I
+9 J
+--- Liste des aretes
+0 1 4
+0 3 3
+0 8 31
+1 0 4
+1 2 38
+1 4 44
+2 1 38
+2 5 34
+2 9 54
+3 0 3
+3 5 14
+3 7 22
+4 1 44
+4 6 76
+4 7 92
+5 2 34
+5 3 14
+5 6 47
+6 4 76
+6 5 47
+6 8 118
+7 3 22
+7 4 92
+7 9 56
+8 0 31
+8 6 118
+8 9 117
+9 2 54
+9 7 56
+9 8 117
