@@ -4,7 +4,7 @@ public class main
 {
     public static void main (String[] args)
     {
-        Graph testGraph = Graph.readGraphFile("petitGraph.gsb");
+        Graph testGraph = Graph.readGraphFile("Graphs/petitGraph.gsb");
 
         List<Edge> edgesSorted = testGraph.getEdges();
 
