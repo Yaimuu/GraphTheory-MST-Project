@@ -8,7 +8,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Graph {
+public class Graph
+{
     private String name;
     private boolean directed;
     private List<Vertex> vertices;
@@ -77,7 +78,7 @@ public class Graph {
      */
     public Graph Kruskal1()
     {
-        System.out.println("Execution of Kruskal 1...");
+//        System.out.println("Execution of Kruskal 1...");
         long startTime = System.nanoTime();
 
         Graph kruskal = new Graph(new LinkedList<Edge>(), this.vertices);
@@ -124,16 +125,48 @@ public class Graph {
         kruskal.setLastDuration(endTime-startTime);
         this.setLastDuration(endTime-startTime);
 
-        System.out.println("End of execution of Kruskal 1 !");
+//        System.out.println("End of execution of Kruskal 1 !");
 
         return kruskal;
     }
 
-    public Graph Kruskal3()
+    private void dfs(Vertex v, List<Vertex> visitedVertices)
     {
-        System.out.println("Execution of Kruskal 3...");
-        long startTime = System.nanoTime();
+        visitedVertices.add(v);
 
+        for(int i = 0; i < v.getParents().size(); ++i)
+        {
+            Vertex currentVertex = v.getParents().get(i);
+            if (!visitedVertices.contains(currentVertex)) {
+                dfs(currentVertex, visitedVertices);
+            }
+        }
+    }
+
+    public boolean isConnected()
+    {
+        List<Vertex> visitedVertices = new LinkedList<>();
+
+        dfs(vertices.get(0), visitedVertices);
+
+        for(int i = 1; i < vertices.size(); i++)
+        {
+            Vertex currentVertex = vertices.get(i);
+            if(!visitedVertices.contains(currentVertex))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public Graph Kruskal2()
+    {
+//        System.out.println("Execution of Kruskal 2...");
+
+        long startTime = System.nanoTime();
+        // Edge list ordered in decreasing order
         List<Edge> edgesSorted = new LinkedList<>(this.edges);
 
         Collections.sort(edgesSorted, new Comparator<Edge>() {
@@ -143,45 +176,35 @@ public class Graph {
             }
         });
 
-        Graph kruskal = new Graph(edgesSorted, this.vertices);
-        kruskal.setName("Kruskal 3");
+        Graph kruskal = new Graph(edgesSorted, new LinkedList<>(this.vertices));
+        kruskal.setName("Kruskal 2");
+//        kruskal.getVerticesParents();
+//        System.out.println(kruskal);
         int i = 0;
-
-        // Subset initialisation
-        subset subsets[] = new subset[this.vertices.size()];
-        for(i = 0; i < this.vertices.size(); ++i)
-            subsets[i]=new subset();
-
-        for (int v = 0; v < this.vertices.size(); ++v)
-        {
-            subsets[v].parent = v;
-            subsets[v].rank = 0;
-        }
-
-        i = 0;
 
         while (kruskal.edges.size() >= this.vertices.size())
         {
-            Edge currentEdge = edgesSorted.get(i++);
-
-            int x = find(subsets, currentEdge.getStart().getId());
-            int y = find(subsets, currentEdge.getEnd().getId());
-
+            Edge currentEdge = kruskal.edges.get(i);
             kruskal.edges.remove(currentEdge);
-            union(subsets, x, y);
+            currentEdge.getStart().getParents().remove(currentEdge.getEnd());
+            currentEdge.getEnd().getParents().remove(currentEdge.getStart());
 
-            if (x == y)
+            if(!kruskal.isConnected())
             {
-                kruskal.edges.add(currentEdge);
+                kruskal.edges.add(i, currentEdge);
+                currentEdge.getStart().getParents().add(currentEdge.getEnd());
+                currentEdge.getEnd().getParents().add(currentEdge.getStart());
+                i++;
             }
         }
 
+//        System.out.println("L'arbre recouvrant de poids minimum est : ");
         long endTime = System.nanoTime();
 
         kruskal.setLastDuration(endTime-startTime);
         this.setLastDuration(endTime-startTime);
 
-        System.out.println("End of execution of Kruskal 3 !");
+//        System.out.println("End of execution of Kruskal 2 !");
 
         return kruskal;
     }
@@ -190,7 +213,7 @@ public class Graph {
      * Complexity : O(m*n)
      * @return
      */
-    public Graph Kruskal1V1()
+    public Graph Kruskal1_OLD()
     {
         long startTime = System.nanoTime();
 
@@ -233,9 +256,9 @@ public class Graph {
      * Complexity : O(m*n)
      * @return
      */
-    public Graph Kruskal2()
+    public Graph Kruskal2_OLD()
     {
-        System.out.println("Execution of Kruskal 2...");
+//        System.out.println("Execution of Kruskal 2...");
 
         long startTime = System.nanoTime();
         // Edge list ordered in decreasing order
@@ -275,7 +298,7 @@ public class Graph {
             start.getParents().remove(end);
             end.getParents().remove(start);
 
-            if(!kruskal.isConnexe())
+            if(!kruskal.isConnected())
             {
 //                System.out.println(currentEdge);
                 kruskal.edges.add(i % kruskal.edges.size(), currentEdge);
@@ -297,7 +320,7 @@ public class Graph {
         kruskal.setLastDuration(endTime-startTime);
         this.setLastDuration(endTime-startTime);
 
-        System.out.println("End of execution of Kruskal 2 !");
+//        System.out.println("End of execution of Kruskal 2 !");
 
         return kruskal;
     }
@@ -308,7 +331,7 @@ public class Graph {
      */
     public Graph Prim()
     {
-        System.out.println("Execution of Prim...");
+//        System.out.println("Execution of Prim...");
         Graph prim = new Graph(new LinkedList<Edge>(), this.vertices);
         prim.setName("Prim");
 //        System.out.println("Prim");
@@ -355,7 +378,7 @@ public class Graph {
         prim.setLastDuration(endTime-startTime);
         this.setLastDuration(endTime-startTime);
 
-        System.out.println("End of execution of Prim !");
+//        System.out.println("End of execution of Prim !");
 
         return prim;
         }
@@ -419,14 +442,14 @@ public class Graph {
              if(vertexDegree(vertexY.getId()) < degre && vertexDegree(vertexZ.getId()) < degre)
              {
                  dMST.edges.add(minimumEdge);
-                 visitedVertices.add(vertexZ);
                  dMST.generateAdjacencyMatrix();
              }
              else
              {
                  this.vertices.remove(minimumEdge);
-                 visitedVertices.add(vertexZ);
              }
+
+             visitedVertices.add(vertexZ);
 
              System.out.println("Degree de " + vertexZ.getName() + " : " + dMST.vertexDegree(vertexZ.getId()) );
              System.out.println("Degree de " + vertexY.getName() + " : " + dMST.vertexDegree(vertexY.getId()) );
@@ -441,7 +464,7 @@ public class Graph {
          System.out.println("End of execution of d-MST !");
 
          dMST.setVerticesParents();
-        if(dMST.isConnexe())
+        if(dMST.isConnected())
             return dMST;
         else
             System.out.print("Pas d'arbre recouvrant de degrée " + degre + " pour ce graphe.");
@@ -479,6 +502,10 @@ public class Graph {
         return result;
     }
 
+    /**
+     * Complecity : O(m)
+     * @return
+     */
     public boolean hasCycle()
     {
         HashMap<Vertex, Integer> clusteredVisitedVertices = new HashMap<>();
@@ -533,7 +560,6 @@ public class Graph {
 //            System.out.println("Current edge : (" + start + ", " + end + ")");
 //            System.out.println(clusteredVisitedVertices.entrySet());
         }
-
         return false;
     }
 
@@ -661,7 +687,12 @@ public class Graph {
                             Edge edge = new Edge(start, end, Integer.parseInt(spllitedLine[2]));
 
                             if( !edges.contains(new Edge(end, start, Integer.parseInt(spllitedLine[2]))) )
+                            {
                                 edges.add(edge);
+                                start.getEdges().add(edge);
+                                end.getEdges().add(edge);
+                            }
+
                         }
                     }
                 }
@@ -735,8 +766,8 @@ public class Graph {
         return lastDuration;
     }
 
-    public long getLastDurationInMs() {
-        return lastDuration / (1000 * 1000);
+    public double getLastDurationInMs() {
+        return (double)lastDuration / (double)(1000 * 1000);
     }
 
     public void setLastDuration(long lastDuration) {
@@ -745,5 +776,15 @@ public class Graph {
 
     public List<List<Integer>> getAdjacentMatrix() {
         return adjacentMatrix;
+    }
+
+    public int getTotalWeigth()
+    {
+        int total = 0;
+        for (Edge e:
+             this.edges) {
+            total += e.getValue();
+        }
+        return total;
     }
 }

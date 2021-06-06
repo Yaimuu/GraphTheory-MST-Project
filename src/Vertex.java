@@ -29,6 +29,12 @@ public class Vertex {
         this.edges = new LinkedList<>();
     }
 
+    public Edge getEdge(Vertex v)
+    {
+        return this.edges.stream().filter(e -> (e.getStart() == this && e.getEnd() == v) || (e.getStart() == v && e.getEnd() == this) )
+                .findFirst().get();
+    }
+
     public String toString()
     {
         return name;
@@ -54,4 +60,6 @@ public class Vertex {
     public String getName() {
         return name;
     }
+
+
 }

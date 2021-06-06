@@ -1,5 +1,4 @@
 import java.io.File;
-import java.util.*;
 
 public class main
 {
@@ -8,9 +7,14 @@ public class main
     public static void main (String[] args)
     {
 //        executeFile("crd1000.gsb");
-//        executeAllFiles();
+        executeAllGraphTests();
         // Création du graphe
-        Graph testGraph = Graph.readGraphFile(root + "peterson_double.gsb");
+//        Graph testGraph = Graph.readGraphFile(root + "peterson_double.gsb");
+
+//        System.out.println(testGraph.getVertices().get(0));
+//        System.out.println(testGraph.getVertices().get(1));
+//        System.out.println(testGraph.getVertices().get(0).getEdge(testGraph.getVertices().get(2)));
+
 //        System.out.println(testGraph);
 //        System.out.println(testGraph.getEdges().get(1));
 //        testGraph.getEdges().remove(1);
@@ -26,15 +30,16 @@ public class main
 
 //        Graph kruskal1 = testGraph.Kruskal1();
 //        Graph kruskal2 = testGraph.Kruskal2();
-        Graph kruskal3 = testGraph.Kruskal3();
+//        Graph kruskal2 = testGraph.Kruskal2();
+//        Graph kruskal3 = testGraph.Kruskal3();
 //        Graph prim = testGraph.Prim();
 
 //        System.out.println("-------------------------------------------------------");
 //        System.out.println(kruskal1);
 //        System.out.println("-------------------------------------------------------");
 //        System.out.println(kruskal2);
-        System.out.println("-------------------------------------------------------");
-        System.out.println(kruskal3);
+//        System.out.println("-------------------------------------------------------");
+//        System.out.println(kruskal3);
 //        System.out.println("-------------------------------------------------------");
 //        System.out.println(prim);
 
@@ -50,21 +55,35 @@ public class main
 //          System.out.println(dMST);
     }
 
-    public static void executeFile(String filename)
+    public static void executeGraphTest(String filename)
     {
         Graph graph = Graph.readGraphFile(root + filename);
         System.out.println("--------------- " + filename);
+        System.out.println("nBVertices : " + graph.getVertices().size());
+        System.out.println("nBEdges : " + graph.getEdges().size());
 
         Graph kruskal1 = graph.Kruskal1();
         Graph kruskal2 = graph.Kruskal2();
         Graph prim = graph.Prim();
 
-        System.out.print("Kruskal 1 : " + kruskal1.getLastDurationInMs() + " ms - ");
-        System.out.print("Kruskal 2 : " + kruskal2.getLastDurationInMs() + " ms - ");
+        if( !(kruskal1.getTotalWeigth() == kruskal2.getTotalWeigth() && kruskal1.getTotalWeigth() == prim.getTotalWeigth()) )
+        {
+            System.out.println("/!\\ ERROR /!\\");
+            System.out.print("Kruskal1 weigth : " + kruskal1.getTotalWeigth());
+            System.out.print("Kruskal2 weigth : " + kruskal2.getTotalWeigth());
+            System.out.println("Prim weigth : " + prim.getTotalWeigth());
+        }
+        else
+        {
+            System.out.println("-- Total weigth : " + kruskal1.getTotalWeigth());
+        }
+
+        System.out.print("Kruskal 1 : " + kruskal1.getLastDurationInMs() + " ms -- ");
+        System.out.print("Kruskal 2 : " + kruskal2.getLastDurationInMs() + " ms -- ");
         System.out.println("Prim : " + prim.getLastDurationInMs() + " ms");
     }
 
-    public static void executeAllFiles()
+    public static void executeAllGraphTests()
     {
         File folder = new File(root);
         File[] listOfFiles = folder.listFiles();
@@ -72,7 +91,7 @@ public class main
         for (File file : listOfFiles) {
             if(file.getName().endsWith(".gsb"))
             {
-                executeFile(file.getName());
+                executeGraphTest(file.getName());
             }
         }
     }
