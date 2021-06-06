@@ -147,6 +147,7 @@ public class Graph {
         kruskal.setName("Kruskal 3");
         int i = 0;
 
+        // Subset initialisation
         subset subsets[] = new subset[this.vertices.size()];
         for(i = 0; i < this.vertices.size(); ++i)
             subsets[i]=new subset();
@@ -166,10 +167,12 @@ public class Graph {
             int x = find(subsets, currentEdge.getStart().getId());
             int y = find(subsets, currentEdge.getEnd().getId());
 
-            if (x != y)
+            kruskal.edges.remove(currentEdge);
+            union(subsets, x, y);
+
+            if (x == y)
             {
-                kruskal.edges.remove(currentEdge);
-                union(subsets, x, y);
+                kruskal.edges.add(currentEdge);
             }
         }
 
@@ -248,19 +251,21 @@ public class Graph {
         Graph kruskal = new Graph(edgesSorted, new LinkedList<>(this.vertices));
         kruskal.setName("Kruskal 2");
 //        kruskal.getVerticesParents();
-        System.out.println(kruskal);
-        int i = 0;
+//        System.out.println(kruskal);
+        int i = 0, count = 0;
 
         while (kruskal.edges.size() >= this.vertices.size())
         {
             if(i == this.vertices.size())
             {
-                System.out.println("Error of : " + (kruskal.edges.size() - this.vertices.size()) + " edges !");
-                System.out.println("kSize : " + kruskal.edges.size());
+//                System.out.println("Error of : " + (kruskal.edges.size() - this.vertices.size()) + " edges !");
+//                System.out.println("i : " + i);
+                System.out.println("count : " + count);
+//                System.out.println("kSize : " + kruskal.edges.size());
 //                break;
             }
 
-            Edge currentEdge = edgesSorted.get(i);
+            Edge currentEdge = edgesSorted.get(i % kruskal.edges.size());
             Vertex start = currentEdge.getStart();
             Vertex end = currentEdge.getEnd();
 
@@ -273,7 +278,7 @@ public class Graph {
             if(!kruskal.isConnexe())
             {
 //                System.out.println(currentEdge);
-                kruskal.edges.add(i, currentEdge);
+                kruskal.edges.add(i % kruskal.edges.size(), currentEdge);
                 start.getParents().add(end);
                 end.getParents().add(start);
             }
@@ -283,6 +288,7 @@ public class Graph {
             }
 
             i++;
+            count++;
         }
 
 //        System.out.println("L'arbre recouvrant de poids minimum est : ");
@@ -531,13 +537,15 @@ public class Graph {
         return false;
     }
 
+    /**
+     * Complexity : O(m)
+     * @return
+     */
     public boolean isConnexe()
     {
         List<Integer> clusterIds = IntStream.rangeClosed(0, this.vertices.size()).boxed().collect(Collectors.toList());
 
         HashMap<Vertex, Integer> clusteredVisitedVertices = new HashMap<>(ToolBox.zipToMap(new LinkedList<>(this.vertices), clusterIds));
-
-        Vertex lastVertex = this.vertices.get(0);
 
         for (Vertex vertex:
              this.vertices)

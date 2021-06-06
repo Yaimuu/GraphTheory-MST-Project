@@ -7,10 +7,10 @@ public class main
 
     public static void main (String[] args)
     {
-        executeFile("peterson_double.gsb");
+//        executeFile("crd1000.gsb");
 //        executeAllFiles();
         // Création du graphe
-        Graph testGraph = Graph.readGraphFile(root + "peterson.gsb");
+        Graph testGraph = Graph.readGraphFile(root + "peterson_double.gsb");
 //        System.out.println(testGraph);
 //        System.out.println(testGraph.getEdges().get(1));
 //        testGraph.getEdges().remove(1);
@@ -26,13 +26,15 @@ public class main
 
 //        Graph kruskal1 = testGraph.Kruskal1();
 //        Graph kruskal2 = testGraph.Kruskal2();
-//        Graph kruskal3 = testGraph.Kruskal3();
+        Graph kruskal3 = testGraph.Kruskal3();
 //        Graph prim = testGraph.Prim();
 
 //        System.out.println("-------------------------------------------------------");
 //        System.out.println(kruskal1);
 //        System.out.println("-------------------------------------------------------");
 //        System.out.println(kruskal2);
+        System.out.println("-------------------------------------------------------");
+        System.out.println(kruskal3);
 //        System.out.println("-------------------------------------------------------");
 //        System.out.println(prim);
 
@@ -44,8 +46,8 @@ public class main
 //        testGraph.Prim();
 //        System.out.println("Temps d'execution de Prim : " + testGraph.getLastDurationInMs() + " ms");
 
-          Graph dMST = testGraph.dMST(4);
-          System.out.println(dMST);
+//          Graph dMST = testGraph.dMST(4);
+//          System.out.println(dMST);
     }
 
     public static void executeFile(String filename)
