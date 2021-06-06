@@ -398,9 +398,9 @@ public class Graph
 
      public Graph dMST(int degre)
      {
-        Graph dMST = new Graph(new LinkedList<Edge>(), this.vertices);
+         Graph dMST = new Graph(new LinkedList<Edge>(), this.vertices);
 
-         System.out.println("Execution of d-MST...");
+         System.out.println("Execution of d-MST of degree : " + degre + "...");
          dMST.setName("D-MST");
 
          long startTime = System.nanoTime();
@@ -412,16 +412,22 @@ public class Graph
          List<Vertex> visitedVertices = new LinkedList<>();
          visitedVertices.add(randVertex);
 
+         List<Edge> tmpEdges = new LinkedList<>(this.edges);
+         tmpEdges.remove(randVertex.getEdges().get(0));
+
          while(this.vertices.size() != visitedVertices.size())
          {
              int minimumWeight = Integer.MAX_VALUE;
              Edge minimumEdge = new Edge();
              Vertex vertexZ = new Vertex(-1);
              Vertex vertexY = new Vertex(-1);
+
+             // Search for the edge with the minimum weight
              for(Edge e : this.edges)
              {
-                 if(e.getValue() < minimumWeight)
+                 if(e.getValue() < minimumWeight && !dMST.edges.contains(e))
                  {
+//                     System.out.println(e);
                      if(visitedVertices.contains(e.getEnd()) && !visitedVertices.contains(e.getStart()))
                      {
                          vertexZ = e.getStart();
@@ -439,20 +445,27 @@ public class Graph
                  }
              }
 
-             if(vertexDegree(vertexY.getId()) < degre && vertexDegree(vertexZ.getId()) < degre)
+
+//             System.out.println(vertexDegree(vertexY.getId()) < degre && vertexDegree(vertexZ.getId()) < degre);
+
+             System.out.println("Degree de " + vertexZ.getName() + " : " + dMST.vertexDegree(vertexZ.getId()) );
+             System.out.println("Degree de " + vertexY.getName() + " : " + dMST.vertexDegree(vertexY.getId()) );
+
+             // Checking the degree of the minimum edge's vertices
+             if(dMST.vertexDegree(vertexY.getId()) < degre-1 && dMST.vertexDegree(vertexZ.getId()) < degre-1 )
              {
+//                 System.out.println(minimumEdge);
                  dMST.edges.add(minimumEdge);
+                 visitedVertices.add(vertexZ);
                  dMST.generateAdjacencyMatrix();
              }
              else
              {
-                 this.vertices.remove(minimumEdge);
+                 dMST.edges.remove(minimumEdge);
+                 visitedVertices.add(vertexZ);
              }
 
-             visitedVertices.add(vertexZ);
 
-             System.out.println("Degree de " + vertexZ.getName() + " : " + dMST.vertexDegree(vertexZ.getId()) );
-             System.out.println("Degree de " + vertexY.getName() + " : " + dMST.vertexDegree(vertexY.getId()) );
              System.out.println("----");
          }
 
@@ -463,13 +476,92 @@ public class Graph
 
          System.out.println("End of execution of d-MST !");
 
-         dMST.setVerticesParents();
-        if(dMST.isConnected())
-            return dMST;
-        else
-            System.out.print("Pas d'arbre recouvrant de degrée " + degre + " pour ce graphe.");
-            return null;
+        if (!dMST.isConnected())
+        {
+            System.out.println("Il n'est pas possible de créer un arbre recouvrant de degré " + degre + " !");
+        }
+
+         return dMST;
      }
+
+    public Graph dMST_v2(int degre)
+    {
+        Graph dMST = new Graph(new LinkedList<Edge>(), this.vertices);
+
+        System.out.println("Execution of d-MST of degree : " + degre + "...");
+        dMST.setName("D-MST");
+
+        long startTime = System.nanoTime();
+
+        Random rand = new Random();
+        int sommetIndice = rand.nextInt(vertices.size());
+
+        Vertex randVertex = this.vertices.get(sommetIndice);
+        List<Vertex> visitedVertices = new LinkedList<>();
+        visitedVertices.add(randVertex);
+
+        List<Edge> tmpEdges = new LinkedList<>();
+
+        while(this.vertices.size() != visitedVertices.size())
+        {
+            int minimumWeight = Integer.MAX_VALUE;
+            Edge minimumEdge = new Edge();
+            Vertex vertexZ = new Vertex(-1);
+            Vertex vertexY = new Vertex(-1);
+            // Search for the edge with the minimum weight
+            for(Edge e : this.edges)
+            {
+                if(e.getValue() < minimumWeight && !tmpEdges.contains(e))
+                {
+                    if(visitedVertices.contains(e.getEnd()) && !visitedVertices.contains(e.getStart()))
+                    {
+                        vertexZ = e.getStart();
+                        vertexY = e.getEnd();
+                        minimumWeight = e.getValue();
+                        minimumEdge = e;
+                    }
+                    else if(visitedVertices.contains(e.getStart()) && !visitedVertices.contains(e.getEnd()))
+                    {
+                        vertexZ = e.getEnd();
+                        vertexY = e.getStart();
+                        minimumWeight = e.getValue();
+                        minimumEdge = e;
+                    }
+                }
+            }
+
+            dMST.edges.add(minimumEdge);
+            vertexZ.getParents().add(vertexY);
+            vertexY.getParents().add(vertexZ);
+
+            // Checking the degree of the minimum edge's vertices
+            if(vertexZ.getParents().size() > degre || vertexY.getParents().size() > degre)
+            {
+                dMST.edges.remove(minimumEdge);
+                vertexZ.getParents().remove(vertexY);
+                vertexY.getParents().remove(vertexZ);
+                tmpEdges.add(minimumEdge);
+            }
+            else {
+                visitedVertices.add(vertexZ);
+            }
+
+        }
+
+        long endTime = System.nanoTime();
+
+        dMST.setLastDuration(endTime-startTime);
+        this.setLastDuration(endTime-startTime);
+
+        System.out.println("End of execution of d-MST !");
+
+        if (!dMST.isConnected())
+        {
+            System.out.println("Il n'est pas possible de créer un arbre recouvrant de degré " + degre + " !");
+        }
+
+        return dMST;
+    }
 
     public List<List<Integer>> generateAdjacencyMatrix()
     {
@@ -502,7 +594,7 @@ public class Graph
         return result;
     }
 
-    /**
+    /** hasCycle
      * Complecity : O(m)
      * @return
      */
@@ -563,7 +655,7 @@ public class Graph
         return false;
     }
 
-    /**
+    /** isConnexe
      * Complexity : O(m)
      * @return
      */
