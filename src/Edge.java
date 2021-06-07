@@ -3,8 +3,6 @@ import java.util.Objects;
 public class Edge {
     private int id;
     private int value;
-    private String mNameInitialVertex;
-    private String mNameFinalVertex;
     private Vertex start;
     private Vertex end;
 

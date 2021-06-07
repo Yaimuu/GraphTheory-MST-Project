@@ -1,23 +1,18 @@
 import java.util.LinkedList;
 import java.util.List;
 
-public class Vertex {
+public class Vertex
+{
     private int id;
     private String name;
-    private List<Vertex> parents;
+    private List<Vertex> neighbours;
     private List<Edge> edges;
-    private int mDegree;
-    private int mDegreePos;
-    private int mDegreeNeg;
-    private int mColor;
-    private int mNbValues;
-    private double mValues[];
 
     public Vertex(int id)
     {
         this.id = id;
         this.name = id + "";
-        this.parents = new LinkedList<>();
+        this.neighbours = new LinkedList<>();
         this.edges = new LinkedList<>();
     }
 
@@ -25,7 +20,7 @@ public class Vertex {
     {
         this.id = id;
         this.name = name;
-        this.parents = new LinkedList<>();
+        this.neighbours = new LinkedList<>();
         this.edges = new LinkedList<>();
     }
 
@@ -44,8 +39,8 @@ public class Vertex {
         return id;
     }
 
-    public List<Vertex> getParents() {
-        return parents;
+    public List<Vertex> getNeighbours() {
+        return neighbours;
     }
 
     public List<Edge> getEdges() {
@@ -54,12 +49,11 @@ public class Vertex {
 
     public int getDegree()
     {
-        return this.parents.size();
+        return this.neighbours.size();
     }
 
     public String getName() {
         return name;
     }
-
-
+    
 }
