@@ -3,7 +3,8 @@ import java.io.PrintWriter;
 
 public class main
 {
-    public static String root = "Graphs/";
+    public static String rootGraphs = "Graphs/";
+    public static String rootData = "Data/";
     public static String results = "results.csv";
     public static String results_dMST = "results_d-MST.csv";
 
@@ -13,23 +14,34 @@ public class main
          *  Uncomment lines to test the program
          */
 
-//        executeFile("crd1000.gsb");
+        /**
+         * Question 3
+         */
+//        executeFile("connexe.gsb");
+//        executeFile("petitGraph.gsb");
+//        executeFile("peterson.gsb");
 
+        /**
+         * Questions 4 et 5
+         */
 //        executeAllGraphTests();
 
-//        executeAll_dMST_Tests();
+        /**
+         * Questions 6 et 7
+         */
+        executeAll_dMST_Tests();
 
+        /**
+         * For more tests uncomment following lines
+         */
         // Create graph
-        Graph testGraph = Graph.readGraphFile(root + "peterson.gsb");
+        Graph testGraph = Graph.readGraphFile(rootGraphs + "peterson.gsb");
 
 //        System.out.println(testGraph);
 
-//        System.out.println("\nAdjacency Matrix :");
-//        System.out.println(Arrays.toString(testGraph.getAdjacentMatrix().toArray()).replace("],", "]\n\n"));
-
-        Graph kruskal1 = testGraph.Kruskal1();
-        Graph kruskal2 = testGraph.Kruskal2();
-        Graph prim = testGraph.Prim();
+//        Graph kruskal1 = testGraph.Kruskal1();
+//        Graph kruskal2 = testGraph.Kruskal2();
+//        Graph prim = testGraph.Prim();
 
 //        System.out.println("-------------------------------------------------------");
 //        System.out.println(kruskal1);
@@ -38,26 +50,9 @@ public class main
 //        System.out.println("-------------------------------------------------------");
 //        System.out.println(prim);
 
-//        testGraph.Kruskal1();
 //        System.out.println("Temps d'execution de Kruskal 1 : " + kruskal1.getLastDurationInMs() + " ms");
-//        System.out.println(testGraph.Kruskal2());
 //        System.out.println("Temps d'execution de Kruskal 2 : " + kruskal2.getLastDurationInMs() + " ms");
-//        testGraph.Prim();
 //        System.out.println("Temps d'execution de Prim : " + prim.getLastDurationInMs() + " ms");
-
-          Graph dMST;
-
-//          dMST = testGraph.dMST_v2(3);
-//          System.out.println(dMST);
-//          System.out.println(dMST.getTotalWeigth());
-
-//          dMST = testGraph.dMST_v2(4);
-//          System.out.println(dMST);
-//          System.out.println(dMST.getTotalWeigth());
-
-//          dMST = testGraph.dMST_v2(5);
-//          System.out.println(dMST);
-//          System.out.println(dMST.getTotalWeigth());
     }
 
     /**
@@ -65,9 +60,11 @@ public class main
      */
     public static void executeAll_dMST_Tests()
     {
-        File folder = new File(root);
-        File results = new File(main.results_dMST);
+        File folder = new File(rootGraphs);
+        File results = new File(rootData + main.results_dMST);
         File[] listOfFiles = folder.listFiles();
+
+        new File(rootData).mkdir();
 
         try
         {
@@ -80,7 +77,7 @@ public class main
                 System.out.println(main.results + " file opened !");
             }
 
-            PrintWriter writer = new PrintWriter(new File(main.results_dMST));
+            PrintWriter writer = new PrintWriter(new File(rootData + main.results_dMST));
             StringBuilder sb = new StringBuilder();
 
             for (int i = 2; i <= 5; i++)
@@ -98,13 +95,13 @@ public class main
 
                     for (int i = 2; i <= 5; i++)
                     {
-                        Graph graph = Graph.readGraphFile(root + graphFile.getName());
+                        Graph graph = Graph.readGraphFile(rootGraphs + graphFile.getName());
                         System.out.println("--------------- " + graph.getName());
                         System.out.println("nBVertices : " + graph.getVertices().size());
                         System.out.println("nBEdges : " + graph.getEdges().size());
 
                         Graph prim = graph.Prim();
-                        Graph dMST = graph.dMST_v2(i);
+                        Graph dMST = graph.dMST(i);
 
                         System.out.print("Prim : " + prim.getLastDurationInMs() + " ms -- ");
                         System.out.println(i + "-MST Prim : " + dMST.getLastDurationInMs() + " ms");
@@ -139,7 +136,7 @@ public class main
      */
     public static String executeGraphTest(String filename)
     {
-        Graph graph = Graph.readGraphFile(root + filename);
+        Graph graph = Graph.readGraphFile(rootGraphs + filename);
         System.out.println("--------------- " + filename);
         System.out.println("nBVertices : " + graph.getVertices().size());
         System.out.println("nBEdges : " + graph.getEdges().size());
@@ -178,9 +175,11 @@ public class main
      */
     public static void executeAllGraphTests()
     {
-        File folder = new File(root);
-        File results = new File(main.results);
+        File folder = new File(rootGraphs);
+        File results = new File(rootData + main.results);
         File[] listOfFiles = folder.listFiles();
+
+        new File(rootData).mkdir();
 
         try
         {
@@ -193,7 +192,7 @@ public class main
                 System.out.println(main.results + " file opened !");
             }
 
-            PrintWriter writer = new PrintWriter(new File(main.results));
+            PrintWriter writer = new PrintWriter(new File(rootData + main.results));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Fichier;Nb Sommets;Nb Arcs;Kruskal 1 (en ms);Kruskal 2 (en ms);Prim (en ms);Poids Total\n");
@@ -214,6 +213,5 @@ public class main
 
         System.out.println("Done !");
     }
-
 
 }

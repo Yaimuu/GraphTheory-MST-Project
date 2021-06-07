@@ -168,7 +168,7 @@ public class Graph
 
     /** Connexity verification algorithm
      * This algorithm checks if the DFS returned all vertices of the graph
-     * if the DFS returns all vertices, then it's connected. Elswhere it's not.
+     * if the DFS returns all vertices, then it's connected. Elsewhere it's not.
      *
      * Complexity : O(log(n))
      *
@@ -193,7 +193,7 @@ public class Graph
     }
 
     /** Kruskal algorithm version 2
-     * This algorithm removes edges not leading the graph to b disconnected
+     * This algorithm removes edges not leading the graph to be disconnected
      *
      * Complexity : O(m²)
      *
@@ -408,19 +408,6 @@ public class Graph
         return prim;
         }
 
-     int vertexDegree(int vertexID)
-     {
-         int degree = 0;
-
-         for(int i = 0; i < this.vertices.size(); i++)
-         {
-             if(this.adjacentMatrix.get(vertexID).get(i) != 0)
-                 degree++;
-         }
-
-         return degree;
-     }
-
     /** Degree constrainted of Minimal Spanning Tree search
      *
      * Algorithm based on Prim algorithm.
@@ -429,7 +416,7 @@ public class Graph
      * @param degre
      * @return MST graph of the current graph with a degree constraint
      */
-    public Graph dMST_v2(int degre)
+    public Graph dMST(int degre)
     {
         Graph dMST = new Graph(new LinkedList<Edge>(), this.vertices);
 
@@ -505,41 +492,6 @@ public class Graph
         }
 
         return dMST;
-    }
-
-    /** Method generating the graph's adjacency Matrix
-     *
-     * @return graph's adjacency Matrix
-     */
-    public List<List<Integer>> generateAdjacencyMatrix()
-    {
-        List<List<Integer>> adjacencyMatrix = new ArrayList<>();
-
-        for(int i = 0; i < this.vertices.size(); i++)
-        {
-            List<Integer> vertexiWeigthes = new ArrayList<>();
-            for(int j = 0; j < this.vertices.size(); j++)
-            {
-                vertexiWeigthes.add( this.findEdge(this.vertices.get(i), this.vertices.get(j)).getValue() );
-            }
-            adjacencyMatrix.add(vertexiWeigthes);
-        }
-        this.adjacentMatrix = adjacencyMatrix;
-        return adjacencyMatrix;
-    }
-
-    public Edge findEdge(Vertex v1, Vertex v2)
-    {
-        Edge result = new Edge();
-        for (Edge e :
-             this.edges) {
-            if( (e.getStart().equals(v1) && e.getEnd().equals(v2)) || (e.getEnd().equals(v1) && e.getStart().equals(v2)) )
-            {
-                result = e;
-            }
-        }
-
-        return result;
     }
 
     /** Graph's non-optimal cycle detection algorithm
@@ -642,6 +594,47 @@ public class Graph
         }
 
         return true;
+    }
+
+    /** Method generating the graph's adjacency Matrix
+     *
+     * @return graph's adjacency Matrix
+     */
+    public List<List<Integer>> generateAdjacencyMatrix()
+    {
+        List<List<Integer>> adjacencyMatrix = new ArrayList<>();
+
+        for(int i = 0; i < this.vertices.size(); i++)
+        {
+            List<Integer> vertexiWeigthes = new ArrayList<>();
+            for(int j = 0; j < this.vertices.size(); j++)
+            {
+                vertexiWeigthes.add( this.findEdge(this.vertices.get(i), this.vertices.get(j)).getValue() );
+            }
+            adjacencyMatrix.add(vertexiWeigthes);
+        }
+        this.adjacentMatrix = adjacencyMatrix;
+        return adjacencyMatrix;
+    }
+
+    /** Finds edge vertices's edge
+     *
+     * @param v1 Vertex 1
+     * @param v2 Vertex 2
+     * @return Vertices's edge
+     */
+    public Edge findEdge(Vertex v1, Vertex v2)
+    {
+        Edge result = new Edge();
+        for (Edge e :
+                this.edges) {
+            if( (e.getStart().equals(v1) && e.getEnd().equals(v2)) || (e.getEnd().equals(v1) && e.getStart().equals(v2)) )
+            {
+                result = e;
+            }
+        }
+
+        return result;
     }
 
     public String toString()
