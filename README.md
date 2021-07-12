@@ -8,8 +8,9 @@ Project realised for a Graph Theory course, studying the MST (Minimum spanning t
 |FERCHIOU Iskander|Mr. BONNEVAY Stéphane|
 |OULED MOUSSA Yanis|
 
-## Details
-This project was made exclusively in Java, with default libraies.
+## Project
+This project was made exclusively in Java, with default librairies.
+We used the IDE IntelliJ to run the project.
 
 The project's aim was to study different algorithms to evaluate their complexity and their real time execution.
 
