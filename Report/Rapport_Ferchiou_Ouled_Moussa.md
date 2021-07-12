@@ -7,9 +7,9 @@ Année 2020 – 2021
 ![Graphs Wallpapers - Wallpaper Cave](Aspose.Words.91483e7d-235d-4af0-8816-ee8f1bf01a42.003.jpeg)
 
 |**Réalisé par**|**Responsable de l’UE**|
-|:-:||:-:|
-|**FERCHIOU Iskander**|**M. BONNEVAY Stéphane**|
-|**OULED MOUSSA Yanis**||
+|:-:|:-:|
+|FERCHIOU Iskander|M. BONNEVAY Stéphane|
+|OULED MOUSSA Yanis||
 
 ## Sommaire
 
