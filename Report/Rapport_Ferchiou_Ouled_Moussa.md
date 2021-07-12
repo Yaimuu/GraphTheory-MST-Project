@@ -1,10 +1,6 @@
-﻿I.  Liste des fonctionnalités et extensions
+# **Graphes et Applications**
 
-![](Aspose.Words.91483e7d-235d-4af0-8816-ee8f1bf01a42.001.jpeg)						![logo ucbl rvb72](Aspose.Words.91483e7d-235d-4af0-8816-ee8f1bf01a42.002.jpeg)
-
-**Graphes et Applications**
-
-Projet – Arbres recouvrant
+## Projet – Arbres recouvrant
 
 Année 2020 – 2021
 
