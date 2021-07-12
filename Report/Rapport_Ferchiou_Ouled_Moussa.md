@@ -6,16 +6,11 @@ Année 2020 – 2021
 
 ![Graphs Wallpapers - Wallpaper Cave](Aspose.Words.91483e7d-235d-4af0-8816-ee8f1bf01a42.003.jpeg)
 
+|**Réalisé par**|**Responsable de l’UE**|
+|**FERCHIOU Iskander**|**M. BONNEVAY Stéphane**|
+|**OULED MOUSSA Yanis**|:-:|
 
-Réalisé par : 						      Responsable de l’UE :
-
-FERCHIOU Iskander			        	      	      M. BONNEVAY Stéphane
-
-OULED MOUSSA Yanis
-Page **PAGE2** sur **11**
-
-
-Sommaire
+## Sommaire
 
 ` `TOC \o "1-3" \h \z \u [I. Choix de langage et structure de graphe	 PAGEREF _Toc73997817 \h 1](#_Toc73997817)
 
@@ -88,10 +83,10 @@ Sommaire
 [Bibliographie	 PAGEREF _Toc73997851 \h 16](#_Toc73997851)
 
 
-I. Choix de langage et structure de graphe
-1. ## Langage de programmation
+# I. Choix de langage et structure de graphe
+## 1.Langage de programmation
 Afin d’implémenter les algorithmes de construction d’arbres recouvrant de poids minimum et de mettre en œuvre un algorithme résolvant le problème d-MST, nous avons, dans un premier temps, décidé d’utiliser le C++ pour découvrir de nouveaux horizons. Cependant, les bibliothèques de ce langage n’étant pas suffisamment garnies, il fallait à chaque étape recoder soi-même les méthodes associées à des structures de données basiques, ou du moins importer des fichiers comportant ces dernières. Compte tenu du nombre de travaux à rendre en cette fin d’année, nous nous sommes finalement orientés vers un langage utilisé à plusieurs reprises durant cette année universitaire, Java, pour optimiser notre temps de travail.
-1. ## Structure
+## 1.Structure
 Par rapport à notre structure de graphe, notre projet utilise principalement trois classes : Vertex, Edge et Graph. 
 
 - **Vertex** symbolise un sommet qui possède un identifiant, un nom et une liste d’adjacence. 
@@ -456,4 +451,4 @@ En guise de conclusion, on peut affirmer que :
 **Graphe de Petersen**
 
 <https://fr.wikipedia.org/wiki/Graphe_de_Petersen> 
-3A InformatiquePage **PAGE  \\* Arabic  \\* MERGEFORMAT3** sur **16**Projet
+
