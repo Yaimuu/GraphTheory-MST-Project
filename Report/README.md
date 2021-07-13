@@ -2,8 +2,6 @@
 
 ## Projet – Arbres recouvrant
 
-
-
 ![Graphs Wallpapers - Wallpaper Cave](Aspose.Words.91483e7d-235d-4af0-8816-ee8f1bf01a42.003.jpeg)
 
 |**Réalisé par**|**Responsable de l’UE**|
@@ -13,80 +11,81 @@
 
 [Sujet](Projet_ArbresRecouvrants.pdf)
 
-Année 2020 – 2021
+[Rapport version PDF](Rapport_Ferchiou_Ouled_Moussa.pdf)
+
+**Année 2020 – 2021**
 
 ## Sommaire
 
 [I. Choix de langage et structure de graphe](#_Toc73997817)
 
-[1.	Langage de programmation	 PAGEREF _Toc73997818 \h 1](#_Toc73997818)
+[1.	Langage de programmation](#_Toc73997818)
 
-[2.	Structure	 PAGEREF _Toc73997819 \h 1](#_Toc73997819)
+[2.	Structure](#_Toc73997819)
 
-[II. Algorithme de Kruskal (version 1)	 PAGEREF _Toc73997820 \h 1](#_Toc73997820)
+[II. Algorithme de Kruskal (version 1)](#_Toc73997820)
 
-[1.	Préambule	 PAGEREF _Toc73997821 \h 1](#_Toc73997821)
+[1.	Préambule](#_Toc73997821)
 
-[2.	Structure de données : union-find	 PAGEREF _Toc73997822 \h 3](#_Toc73997822)
+[2.	Structure de données : union-find](#_Toc73997822)
 
-[3.	Déroulement de l’algorithme	 PAGEREF _Toc73997823 \h 3](#_Toc73997823)
+[3.	Déroulement de l’algorithme](#_Toc73997823)
 
-[4.	Complexité temporelle	 PAGEREF _Toc73997824 \h 6](#_Toc73997824)
+[4.	Complexité temporelle](#_Toc73997824)
 
-[III. Algorithme de Kruskal (version 2)	 PAGEREF _Toc73997825 \h 6](#_Toc73997825)
+[III. Algorithme de Kruskal (version 2)](#_Toc73997825)
 
-[1.	Préambule	 PAGEREF _Toc73997826 \h 6](#_Toc73997826)
+[1.	Préambule](#_Toc73997826)
 
-[2.	Vérification de la connexité (Partie 1)	 PAGEREF _Toc73997827 \h 6](#_Toc73997827)
+[2.	Vérification de la connexité (Partie 1)](#_Toc73997827)
 
-[3.	Vérification de la connexité (Partie 2)	 PAGEREF _Toc73997828 \h 6](#_Toc73997828)
+[3.	Vérification de la connexité (Partie 2)](#_Toc73997828)
 
-[4.	Complexité temporelle	 PAGEREF _Toc73997829 \h 7](#_Toc73997829)
+[4.	Complexité temporelle](#_Toc73997829)
 
-[IV. Algorithme de Prim	 PAGEREF _Toc73997830 \h 7](#_Toc73997830)
+[IV. Algorithme de Prim](#_Toc73997830)
 
-[1.	Préambule	 PAGEREF _Toc73997831 \h 7](#_Toc73997831)
+[1.	Préambule](#_Toc73997831)
 
-[2.	Détection de l’arc du poids minimum	 PAGEREF _Toc73997832 \h 7](#_Toc73997832)
+[2.	Détection de l’arc du poids minimum](#_Toc73997832)
 
-[3.	Complexité temporelle	 PAGEREF _Toc73997833 \h 7](#_Toc73997833)
+[3.	Complexité temporelle](#_Toc73997833)
 
-[V. Tests sur des « petits » graphes	 PAGEREF _Toc73997834 \h 8](#_Toc73997834)
+[V. Tests sur des « petits » graphes](#_Toc73997834)
 
-[1.	Préambule	 PAGEREF _Toc73997835 \h 8](#_Toc73997835)
+[1.	Préambule](#_Toc73997835)
 
-[2.	Algorithme de Kruskal (version 1)	 PAGEREF _Toc73997836 \h 8](#_Toc73997836)
+[2.	Algorithme de Kruskal (version 1)](#_Toc73997836)
 
-[3.	Algorithme de Kruskal (version 2)	 PAGEREF _Toc73997837 \h 9](#_Toc73997837)
+[3.	Algorithme de Kruskal (version 2)](#_Toc73997837)
 
-[4.	Algorithme de Prim	 PAGEREF _Toc73997838 \h 9](#_Toc73997838)
+[4.	Algorithme de Prim](#_Toc73997838)
 
-[VI. Etude comparative	 PAGEREF _Toc73997839 \h 11](#_Toc73997839)
+[VI. Etude comparative](#_Toc73997839)
 
-[1.	Préambule	 PAGEREF _Toc73997840 \h 11](#_Toc73997840)
+[1.	Préambule](#_Toc73997840)
 
-[2.	Données	 PAGEREF _Toc73997841 \h 11](#_Toc73997841)
+[2.	Données](#_Toc73997841)
 
-[3.	Analyse	 PAGEREF _Toc73997842 \h 11](#_Toc73997842)
+[3.	Analyse](#_Toc73997842)
 
-[VII. Algorithme d-MST	 PAGEREF _Toc73997843 \h 12](#_Toc73997843)
+[VII. Algorithme d-MST](#_Toc73997843)
 
-[1.	Préambule	 PAGEREF _Toc73997844 \h 12](#_Toc73997844)
+[1.	Préambule](#_Toc73997844)
 
-[2.	Raisonnement	 PAGEREF _Toc73997845 \h 12](#_Toc73997845)
+[2.	Raisonnement](#_Toc73997845)
 
-[VIII. Tests de l’algorithme d-MST	 PAGEREF _Toc73997846 \h 12](#_Toc73997846)
+[VIII. Tests de l’algorithme d-MST](#_Toc73997846)
 
-[1.	Préambule	 PAGEREF _Toc73997847 \h 12](#_Toc73997847)
+[1.	Préambule](#_Toc73997847)
 
-[2.	Données et interprétation	 PAGEREF _Toc73997848 \h 13](#_Toc73997848)
+[2.	Données et interprétation](#_Toc73997848)
 
-[3.	Interprétation	 PAGEREF _Toc73997849 \h 15](#_Toc73997849)
+[3.	Interprétation](#_Toc73997849)
 
-[Annexes	 PAGEREF _Toc73997850 \h 16](#_Toc73997850)
+[Annexes](#_Toc73997850)
 
-[Bibliographie	 PAGEREF _Toc73997851 \h 16](#_Toc73997851)
-
+[Bibliographie](#_Toc73997851)
 
 # I. Choix de langage et structure de graphe
 ## 1.Langage de programmation
