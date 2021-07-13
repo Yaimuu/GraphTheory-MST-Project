@@ -8,6 +8,8 @@ Project realised for a Graph Theory course, studying the MST (Minimum spanning t
 |FERCHIOU Iskander|Mr. BONNEVAY Stéphane|
 |OULED MOUSSA Yanis|
 
+**Grade** : 18/20
+
 ## Project
 This project was made exclusively in Java, with default librairies.
 We used the IDE IntelliJ to run the project.
