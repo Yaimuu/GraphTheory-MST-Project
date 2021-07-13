@@ -10,6 +10,8 @@ Project realised for a Graph Theory course, studying the MST (Minimum spanning t
 
 **Grade** : 18/20
 
+[Subject](Report/Projet_ArbresRecouvrants.pdf) (In French)
+
 ## Project
 This project was made exclusively in Java, with default librairies.
 We used the IDE IntelliJ to run the project.
