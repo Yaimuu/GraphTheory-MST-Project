@@ -12,6 +12,8 @@ Project realised for a Graph Theory course, studying the MST (Minimum spanning t
 
 [Subject](Report/Projet_ArbresRecouvrants.pdf) (In French)
 
+[Full Report](Report/Rapport_Ferchiou_Ouled_Moussa.pdf) (In French)
+
 ## Project
 This project was made exclusively in Java, with default librairies.
 We used the IDE IntelliJ to run the project.
