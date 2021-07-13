@@ -17,7 +17,7 @@ Année 2020 – 2021
 
 ## Sommaire
 
-[I. Choix de langage et structure de graphe	 PAGEREF _Toc73997817 \h 1](#_Toc73997817)
+[I. Choix de langage et structure de graphe](#_Toc73997817)
 
 [1.	Langage de programmation	 PAGEREF _Toc73997818 \h 1](#_Toc73997818)
 
