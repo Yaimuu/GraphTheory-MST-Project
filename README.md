@@ -12,7 +12,9 @@ Project realised for a Graph Theory course, studying the MST (Minimum spanning t
 
 [Subject](Report/Projet_ArbresRecouvrants.pdf) (In French)
 
-[Full Report](Report/Rapport_Ferchiou_Ouled_Moussa.pdf) (In French)
+[Full Report](Report/) (In French)
+
+[Full Report PDF](Report/Rapport_Ferchiou_Ouled_Moussa.pdf) (In French)
 
 ## Project
 This project was made exclusively in Java, with default librairies.
@@ -27,6 +29,4 @@ We studied the following algorithms :
 |Kruskal version 1|O( m*log(m) )|
 |Kruskal version 2|O( m*log(m) )|
 |Prim|O( n² )|
-
-[For more informations about the project you can check out our project's report !](https://github.com/Yaimuu/GraphTheory-MST-Project/tree/main/Report) (Exclusively in French at the moment)
 
